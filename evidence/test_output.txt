@@ -1,0 +1,129 @@
+
+=== 1. PATIENT (alice) through the backend account app_service ===
+ PASS | sees only her own scan
+
+ PASS | cannot see another patient's scan
+
+ PASS | sees only her own user row
+
+ PASS | sees only her own prediction results
+
+ PASS | can read the condition list
+
+ PASS | cannot read the audit log
+
+ PASS | can add a scan for herself
+
+ PASS | cannot add a scan for someone else
+
+ PASS | can update her own profile (age)
+
+ PASS | cannot promote herself to administrator
+
+ PASS | cannot reset her own failed-login counter
+
+ PASS | cannot edit another patient's profile
+
+ PASS | cannot write a medical review
+
+ PASS | cannot change the condition list
+
+ PASS | DELETE is not allowed on scans
+
+ PASS | DELETE is not allowed on users
+
+ PASS | TRUNCATE is not allowed
+
+ PASS | cannot DROP a table
+
+ PASS | cannot create tables in the app schema
+
+ PASS | cannot create tables in public
+
+ PASS | cannot edit the audit log
+
+ PASS | cannot edit a prediction result
+
+
+=== 2. NO CONTEXT SET (backend forgot to say who is calling) ===
+ PASS | sees no scans
+
+ PASS | sees no users
+
+
+=== 3. LOGIN / REGISTER code path (app role "auth") ===
+ PASS | can look up an account by username
+
+ PASS | can register a new PATIENT
+
+ PASS | cannot register an administrator
+
+ PASS | can count a failed login
+
+ PASS | can lock an account for 3 minutes
+
+ PASS | can record a login attempt
+
+ PASS | cannot read patient scans
+
+ PASS | cannot make anyone an administrator
+
+
+=== 4. MEDICAL REVIEWER ===
+ PASS | sees all scans
+
+ PASS | patient names stay hidden in the scan view
+
+ PASS | cannot read the users table (only own row)
+
+ PASS | can review a scan as herself
+
+ PASS | cannot review in someone else's name
+
+ PASS | cannot change roles
+
+
+=== 5. ADMINISTRATOR ===
+ PASS | sees all users
+
+ PASS | sees all scans
+
+ PASS | can read the audit log
+
+ PASS | can create a reviewer account
+
+ PASS | can change a user's role
+
+ PASS | can add a skin condition
+
+ PASS | still cannot DELETE users
+
+ PASS | still cannot DROP tables (backend owns none)
+
+
+=== 6. REPORT READER (report_reader: SELECT only) ===
+ PASS | can read aggregated condition stats
+
+ PASS | can read the condition list
+
+ PASS | cannot read users
+
+ PASS | cannot read scan records
+
+ PASS | cannot read the scan summary view
+
+ PASS | cannot INSERT anything
+
+ PASS | cannot UPDATE anything
+
+ PASS | cannot DELETE anything
+
+
+=== 7. Role hygiene ===
+ PASS | app_service is not a superuser
+
+ PASS | backend owns no tables
+
+ PASS | every table has row-level security on
+
+ROLLBACK

@@ -75,6 +75,7 @@ class _RegisterPageState extends State<RegisterPage> {
         age: int.parse(_age.text.trim()),
         username: _username.text.trim(),
         password: _password.text,
+        consent: _consent,
       ),
     );
     if (!mounted) return;

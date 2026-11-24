@@ -1,0 +1,42 @@
+--- Payload typed into the Login page username box:
+ typed_username 
+----------------
+ x') OR ('1'='1
+(1 row)
+
+
+=== A. UNSAFE: user input glued into the SQL text ===
+SQL that PostgreSQL would receive:
+                                                    sql_text                                                    
+----------------------------------------------------------------------------------------------------------------
+ SELECT user_id, username FROM skin_classification_schema.users WHERE lower(username) = lower('x') OR ('1'='1')
+(1 row)
+
+BEGIN
+Result (the attack works, every account is returned):
+ user_id | username 
+---------+----------
+       8 | alice_p
+       9 | bob_pat
+(2 rows)
+
+ROLLBACK
+
+=== B. SAFE: parameterized query (what backend/auth_queries.py does) ===
+SQL text sent:   ... WHERE lower(username) = lower($1)
+Value sent separately (as data): the same payload as above
+BEGIN
+ user_id | username 
+---------+----------
+(0 rows)
+
+ROLLBACK
+
+=== C. SAFE query with a real username still works ===
+BEGIN
+ user_id | username 
+---------+----------
+       8 | alice_p
+(1 row)
+
+ROLLBACK

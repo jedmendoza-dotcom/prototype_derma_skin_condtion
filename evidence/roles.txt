@@ -1,0 +1,10 @@
+                                List of roles
+    Role name    |                         Attributes                         
+-----------------+------------------------------------------------------------
+ app_rw_group    | Cannot login
+ app_service     | 50 connections
+ db_admin        | 
+ postgres        | Superuser, Create role, Create DB, Replication, Bypass RLS
+ report_reader   | 5 connections
+ report_ro_group | Cannot login
+

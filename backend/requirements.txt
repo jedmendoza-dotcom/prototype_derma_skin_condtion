@@ -1,0 +1,9 @@
+fastapi>=0.110
+uvicorn[standard]>=0.29
+psycopg[binary]>=3.1
+PyJWT>=2.8
+argon2-cffi>=23.1
+python-dotenv>=1.0
+python-multipart>=0.0.9   # file upload (photos)
+Pillow>=10.3                # reads and checks photos
+numpy>=1.26                 # sharpness / brightness maths

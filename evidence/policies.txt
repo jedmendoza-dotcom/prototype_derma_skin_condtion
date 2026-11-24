@@ -1,0 +1,10 @@
+  tablename   |  policyname  |  cmd   |     roles      
+--------------+--------------+--------+----------------
+ scan_records | scans_insert | INSERT | {app_rw_group}
+ scan_records | scans_select | SELECT | {app_rw_group}
+ scan_records | scans_update | UPDATE | {app_rw_group}
+ users        | users_insert | INSERT | {app_rw_group}
+ users        | users_select | SELECT | {app_rw_group}
+ users        | users_update | UPDATE | {app_rw_group}
+(6 rows)
+

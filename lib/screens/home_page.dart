@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../core/theme.dart';
 import '../data/skin_conditions.dart';
+import '../services/auth_service.dart';
 import '../widgets/fade_in_up.dart';
+import '../widgets/history_section.dart';
 import '../widgets/smart_image.dart';
+import 'scan_page.dart';
 
 class HomePage extends StatefulWidget {
   final ValueChanged<int> onNavigate;
@@ -17,6 +20,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _conditionsKey = GlobalKey();
+  int _historyTick = 0; // changes after a new screening so the history reloads
 
   void _learnMore() {
     final ctx = _conditionsKey.currentContext;
@@ -28,13 +32,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _startScreening() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        behavior: SnackBarBehavior.floating,
-        content: Text('The screening module is coming soon.'),
+  Future<void> _startScreening() async {
+    await Navigator.of(context).push(MaterialPageRoute(
+      builder: (_) => ScanPage(
+        baseUrl: AuthService.baseUrl,
+        getToken: AuthService.getAccessToken,
       ),
-    );
+    ));
+    if (mounted) setState(() => _historyTick++);
   }
 
   @override
@@ -51,6 +56,12 @@ class _HomePageState extends State<HomePage> {
               onStart: _startScreening,
             ),
           ),
+          if (widget.username != null)
+            HistorySection(
+              baseUrl: AuthService.baseUrl,
+              getToken: AuthService.getAccessToken,
+              refreshTick: _historyTick,
+            ),
           const _Section(child: _HowItWorks()),
           _Section(key: _conditionsKey, child: const _Conditions()),
           const _Section(child: _Disclaimer()),
